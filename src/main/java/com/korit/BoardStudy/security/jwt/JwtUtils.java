@@ -9,7 +9,6 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.swing.plaf.PanelUI;
 import java.security.Key;
 import java.util.Date;
 
@@ -18,31 +17,44 @@ public class JwtUtils {
 
     private final Key KEY;
 
-    public JwtUtils(@Value("${jwt.secret}")String secret){
+    public JwtUtils(@Value("${jwt.secret}") String secret) {
         KEY = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
-    public String generateAccessToken(String id){
+    public String generateAccessToken(String id) {
         return Jwts.builder()
-                .subject("AcessToken")
+                .subject("AccessToken")
                 .id(id)
-                .expiration(new Date(new Date().getTime()+(1000L*60L*60L*24L*30L)))
+                .expiration(new Date(new Date().getTime() + (1000L * 60L * 60L * 24L * 30L)))
                 .signWith(KEY)
                 .compact();
     }
 
-    public boolean isBearer(String token){
-        if(token == null){
+    public String generateVerifyToken(String id) {
+        return Jwts.builder()
+                .subject("VerifyToken")
+                .id(id)
+                .expiration(new Date(new Date().getTime() + (1000L * 60L * 3L)))
+                .signWith(KEY)
+                .compact();
+
+    }
+
+    public boolean isBearer(String token) {
+        if (token == null) {
+            return false;
+        }
+        if (!token.startsWith("Bearer ")) {
             return false;
         }
         return true;
     }
 
-    public String removeBearer(String token){
-        return token.replaceFirst("Bearer","");
+    public String removeBearer(String token) {
+        return token.replaceFirst("Bearer ", "");
     }
 
-    public Claims getClaims(String token){
+    public Claims getClaims(String token) {
         JwtParserBuilder jwtParserBuilder = Jwts.parser();
         jwtParserBuilder.setSigningKey(KEY);
         JwtParser jwtParser = jwtParserBuilder.build();
