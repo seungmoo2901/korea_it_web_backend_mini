@@ -12,7 +12,7 @@ public class Board {
     private String title;
     private String content;
     private Integer userId;
-    private LocalDateTime creatDt;
+    private LocalDateTime createDt;
     private LocalDateTime updateDt;
 
 }

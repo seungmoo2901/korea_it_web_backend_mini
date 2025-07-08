@@ -22,7 +22,7 @@ public class MailController {
 
     @PostMapping("/send")
     public ResponseEntity<?> sendMail(@RequestBody SendMailReqDto sendMailReqDto, @AuthenticationPrincipal PrincipalUser principalUser) {
-        System.out.println("요청 들엉옴");
+        System.out.println("요청 들어옴");
         return ResponseEntity.ok(mailService.sendMail(sendMailReqDto, principalUser));
     }
 
