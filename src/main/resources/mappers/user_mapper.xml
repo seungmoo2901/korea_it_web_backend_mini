@@ -23,6 +23,7 @@
         <result property="username" column="username"/>
         <result property="password" column="password"/>
         <result property="email" column="email"/>
+        <result property="profileImg" column="profile_img"/>
         <result property="createDt" column="create_dt"/>
         <result property="updateDt" column="update_dt"/>
         <collection property="userRoles" resultMap="UserRoleResultMap"/>
@@ -31,7 +32,7 @@
     <insert id="addUser" useGeneratedKeys="true" keyProperty="userId">
         insert into
         user_tb
-        values (0, #{username}, #{password}, #{email}, now(), null)
+        values (0, #{username}, #{password}, #{email}, "https://firebasestorage.googleapis.com/v0/b/react-board-moo.firebasestorage.app/o/profile-img%2F%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84.png?alt=media&amp;token=1e374ad8-1b4c-48ab-a0b7-bacc9f504390", now(), null)
     </insert>
 
     <select id="getUserByUserId" resultMap="UserResultMap">
@@ -40,6 +41,7 @@
             ut.username,
             ut.password,
             ut.email,
+            ut.profile_img,
             ut.create_dt,
             ut.update_dt,
 
@@ -66,6 +68,7 @@
         ut.username,
         ut.password,
         ut.email,
+        ut.profile_img,
         ut.create_dt,
         ut.update_dt,
 
@@ -92,6 +95,7 @@
         ut.username,
         ut.password,
         ut.email,
+        ut.profile_img,
         ut.create_dt,
         ut.update_dt,
 
@@ -120,6 +124,17 @@
         update_dt = now()
         where
         user_id = #{userId}
+    </update>
+
+    <update id="updateProfileImg">
+        update
+            frome
+                user_tb
+        set
+            profile_img = #{profileImg},
+            update_dt = now()
+        where
+            user_id = #{userId}
     </update>
 
 </mapper>
